@@ -1,0 +1,35 @@
+type: collection
+title: Enrichment from External Databases
+hidden: true
+coverage:
+  start: "2023-08-20"
+  frequency: monthly
+deploy:
+  memory: "2000Mi"
+exports:
+  - statistics.json
+summary: >
+  These data sources are only partially imported where a link to an existing
+  entity of interest can be found.
+children:
+  - ext_cy_companies
+  - ext_cz_business_register
+  - ext_ee_ariregister
+  - ext_eu_esma_firds
+  - ext_gb_coh_psc
+  - ext_ge_company_registry
+  - ext_gleif
+  - ext_ror
+  - ext_icij_offshoreleaks
+  - ext_lv_business_register
+  - ext_kz_companies
+  - ext_md_companies
+  - ext_us_irs_ffi
+  - opencorporates
+  - ext_ru_egrul
+  - ext_ua_edr
+  - wikidata
+  - openfigi
+  - permid
+
+ci_test: false

@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    image: ghcr.io/opensanctions/opensanctions:latest
+    hostname: work
+    volumes:
+      - "./data:/opensanctions/data"
+      - "./opensanctions:/opensanctions/opensanctions"
+    tmpfs:
+      - "/tmp"
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true

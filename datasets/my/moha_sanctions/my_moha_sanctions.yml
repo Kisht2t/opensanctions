@@ -1,0 +1,124 @@
+title: Malaysia MOHA Sanctions List
+entry_point: crawler.py
+prefix: mymoha
+coverage:
+  frequency: weekly
+  start: "2023-07-11"
+load_statements: true
+ci_test: false
+summary: >
+  The Malaysian Home Affairs list designates those found to be involved in acts
+  of terrorism.
+description: |
+  > This list is made by the Minister of Home Affairs under the section 66B (1) of
+  > the Anti-Money Laundering, Anti-Terrorism Financing and Proceeds From Illegal
+  > Activities 2001 [Act 613]. Under section 66B (1) of the Act 613,
+  >
+  > Where the Minister of Home Affairs is satisfied on information given to him by
+  > a police officer that:
+  > 
+  > (a) an entity has knowingly committed, attempted to commit, participated in
+  > committing or facilitated the commission of, a terrorist act; or
+  > (b) an entity is knowingly acting on behalf of, at the direction of, or in
+  > association with, an entity referred to in paragraph (a), 
+  >
+  > the Minister of Home Affairs may, by order published in the Gazette, declare the
+  > entity to be a specified entity.
+
+  **Note:** This crawler uses an LLM-based approach to extract the data from
+  the PDF file. We are still working on improving the quality of that process
+  in order to ensure the highest possible accuracy.
+publisher:
+  name: Ministry of Home Affairs (Kementerian Dalam Negeri)
+  acronym: MOHA
+  description: |
+    Sanctions in the ministry are managed by the division responsible for
+    Countering Financing of Terrorism.
+  url: https://www.moha.gov.my/index.php/en/
+  country: my
+  official: true
+url: https://www.moha.gov.my/index.php/en/maklumat-perkhidmatan/membanteras-pembiayaan-keganasan2/senarai-kementerian-dalam-negeri
+data:
+  url: https://www.moha.gov.my/index.php/en/maklumat-perkhidmatan/membanteras-pembiayaan-keganasan2/senarai-kementerian-dalam-negeri
+  format: PDF
+  lang: msa
+http:
+  user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36" (zavod; opensanctions.org)
+dates:
+  formats: ["%d %B %Y", "%d %b %Y", "%d.%m.%Y"]
+  months:
+    May: Mei
+    February: Februari
+    August: Ogos
+tags:
+  - list.sanction
+
+assertions:
+  min:
+    schema_entities:
+      Person: 65
+      Organization: 20
+  max:
+    schema_entities:
+      Person: 200
+      Organization: 50
+
+lookups:
+  columns:
+    options:
+      - match: design_ation
+        value: designation
+      - match:
+          - idetification_card_number
+          - idetificationcard_number
+          - identification_card_number
+        value: id_number
+      - match:
+          - date_ofbirth
+        value: date_of_birth
+      - match: referen_ce
+        value: reference
+      - match: nationalit_y
+        value: nationality
+      - match: date_0f_listed
+        value: date_of_listed
+      - match: other_names
+        value: other_name
+  type.country:
+    options:
+      - match:
+          - "-"
+          - '"'
+        value: null
+      - match:
+          - "DL 11, Lorong, Mutiara 2, Taman Bukit Ampang, Lembah Jaya, 68000, Ampang, Selangor, Malaysia"
+        value: Malaysia
+      - match: lraq
+        value: Iraq
+      - match: Punjab, India
+        value: India
+      - match: Idlib, Syria
+        value: Syria
+      - match:
+          - Filipina (Pemastautin Tetap di Malaysi
+          - Filipina (Pemaustautin Tetap di Malaysia)
+          - Filipina (Pemastautin Tetap di Malaysia)
+          - Filipina (Pemasautin Tetap di Malaysia)
+          - Filipina (PemastautinTetap di Malaysia)
+          - Philippines (Permanent Resident in Malaysia)
+        value: Philippines
+      - match:
+          - Pemastautin Tetap di Malaysia
+          - (Pemasautin Tetap di Malaysia)
+        value: Malaysia
+  type.date:
+    options:
+      - match:
+          - 20.02.1976 13.02.1975 15.02.1976 07.01.1977
+          - "20.02.197613.02.197515.02.197607.01.1977"
+          - "20.2.197613.2.197515.2.19767.1.1977"
+        values:
+          - 1976-02-20
+          - 1975-02-13
+          - 1976-02-15
+          - 1977-01-07

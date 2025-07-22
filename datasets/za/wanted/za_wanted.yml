@@ -1,0 +1,77 @@
+name: za_wanted
+title: "South Africa Wanted Persons"
+entry_point: crawler.py
+prefix: za-wanted
+coverage:
+  frequency: daily
+  start: 2024-01-19
+load_statements: true
+summary: >
+  Wanted persons list of South African Police Service
+description: |
+  Dataset with name, crime and status (suspect or wanted) published
+  by South African Police Service.
+
+  In the source url it's possible to see the crime circumstances
+  and other additional details (such as crime date and gender).
+tags:
+  - list.wanted
+url: https://www.saps.gov.za/crimestop/wanted/list.php
+publisher:
+  name: South African Police Service
+  acronym: SAPS
+  country: za
+  official: true
+  url: https://www.saps.gov.za/
+data:
+  url: https://www.saps.gov.za/crimestop/wanted/list.php
+  format: HTML
+http:
+  retry_statuses:
+    - 404 # usually by the time we check, the page is there.
+    - 408
+    - 413
+    - 429
+    - 500
+    - 502
+    - 503
+
+assertions:
+  min:
+    schema_entities:
+      Person: 400
+  max:
+    schema_entities:
+      Person: 920
+
+lookups:
+  type.number:
+    lowercase: true
+    options:
+      - match:
+          - "0 m"
+          - "n/a m"
+          - "Unknown m"
+          - "Unknnown m"
+          - "unknown m"
+        value: null
+      - match:
+          - "0 kg"
+          - "n/a kg"
+          - "Unknown kg"
+          - "Unkniwn kg"
+          - "unknown kg"
+        value: null
+  type.string:
+    lowercase: true
+    options:
+      - match: "Unknown"
+        value: null
+  type.name:
+    lowercase: true
+    options:
+      - match:
+          - "0"
+          - Unknown
+          - "n/a"
+        value: null

@@ -1,0 +1,92 @@
+title: African Development Bank Debarred Entities
+entry_point: crawler.py
+prefix: afdb
+coverage:
+  frequency: daily
+  start: 2021-11-08
+ci_test: false
+load_statements: true
+summary: >-
+  Individuals and firms that have been sanctioned by AfDB, for having
+  participated in coercive, collusive, corrupt, fraudulent or obstructive
+  practices under the Bank’s sanctions system.
+description: |
+  The individuals and firms below have been sanctioned by the African Development
+  Bank Group or by signatories to the Agreement for Mutual Enforcement of Debarment
+  Decisions. Sanctions are imposed on entities found to have participated in
+  coercive, collusive, corrupt, fraudulent or obstructive practices under the
+  Bank’s sanctions system or adopted under the Agreement for Mutual Enforcement
+  of Debarment Decisions.
+
+  These individuals and firms are therefore considered ineligible to participate in
+  contracts financed or administered by the African Development Bank Group for
+  the stipulated periods.
+publisher:
+  name: "African Development Bank Group"
+  acronym: AfDB
+  description: |
+    The African Development Bank (AfDB) Group is a regional multilateral development
+    finance institution established to contribute to the economic development and
+    social progress of African countries. The AfDB comprises three entities: the
+    African Development Bank (ADB), the African Development Fund (ADF) and the
+    Nigeria Trust Fund (NTF).
+  country: zz
+  url: https://www.afdb.org/
+  official: true
+tags:
+  - list.debarment
+  - sector.devbank
+url: https://www.afdb.org/en/projects-operations/debarment-and-sanctions-procedures
+data:
+  url: https://www.afdb.org/en/projects-operations/debarment-and-sanctions-procedures
+  format: HTML
+
+dates:
+  formats: ["%Y/%m/%d", "%d-%b-%Y", "%d-%m-%Y", "%d-%b-%y"]
+  months:
+    "Sep": "Sept"
+assertions:
+  min:
+    schema_entities:
+      Company: 720
+      Person: 220
+    country_entities:
+      cn: 100
+      ng: 30
+      in: 30
+      de: 1
+  max:
+    schema_entities:
+      Company: 1400
+      Person: 500
+
+lookups:
+  types:
+    lowercase: true
+    map:
+      FIRM: Company
+      INDIVIDUAL: Person
+  type.country:
+    lowercase: true
+    normalize: true
+    options:
+      - match: Guinée Conakry
+        value: Guinea
+      - match: Khazakstan
+        value: Kazakhstan
+      - match: Uzbekistan, Rep. of
+        value: Uzbekistan
+      - match: CESA HONDURAS
+        value: Honduras
+      - match: CESA PANAMÁ
+        value: Panama
+      - match: Agentina
+        value: Argentina
+      - match: Philipines
+        value: Philippines
+  type.date:
+    options:
+      - match: 10/31/23
+        value: 2023-10-31
+      - match: 10/30/28
+        value: 2028-10-30
